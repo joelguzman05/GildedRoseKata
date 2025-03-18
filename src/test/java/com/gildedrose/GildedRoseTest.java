@@ -10,7 +10,7 @@ class GildedRoseTest {
     private static final String AGED_BRIE = "Aged Brie";
     private static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
     private static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
-
+    private static final String CONJURED = "Conjured Mana Cake";
 
     @Test
     void testStandardItemQualityDecreasesBeforeSellDate() {
@@ -130,5 +130,25 @@ class GildedRoseTest {
 
         assertEquals(4, items[0].sellIn);
         assertEquals(50, items[0].quality);
+    }
+
+    @Test
+    void testConjuredItemQualityDecreasesTwice() {
+        Item[] items = new Item[] { new Item(CONJURED, 3, 5) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+
+        assertEquals(2, items[0].sellIn);
+        assertEquals(3, items[0].quality);
+    }
+
+    @Test
+    void testConjuredItemQualityNeverNegative() {
+        Item[] items = new Item[] { new Item(CONJURED, 3, 1) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+
+        assertEquals(2, items[0].sellIn);
+        assertEquals(0, items[0].quality);
     }
 }
